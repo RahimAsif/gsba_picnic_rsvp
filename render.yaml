@@ -14,7 +14,7 @@ services:
 
   # ── Static Frontend ─────────────────────────────────────────────────────────
   - type: web
-    name: picnic-rsvp-frontend
+    name: gsba-picnic-2026-rsvp
     runtime: static
     rootDir: frontend
     # Writes the backend URL into config.js at build time.
