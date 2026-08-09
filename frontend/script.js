@@ -23,6 +23,62 @@ const adultFoodContainer = document.getElementById("adultFoodContainer");
 const childrenInput = document.getElementById("children");
 const childAgesContainer = document.getElementById("childAgesContainer");
 const emailInput = document.getElementById("email");
+const submissionSummary = document.getElementById("submissionSummary");
+const submissionSummaryTitle = document.getElementById("submissionSummaryTitle");
+const submissionSummaryMeta = document.getElementById("submissionSummaryMeta");
+const submissionSummaryList = document.getElementById("submissionSummaryList");
+
+function formatFoodCounts(preferences) {
+  const counts = {};
+  preferences.forEach((item) => {
+    counts[item] = (counts[item] || 0) + 1;
+  });
+
+  return Object.entries(counts)
+    .map(([food, count]) => `${food}: ${count}`)
+    .join(" • ");
+}
+
+function showSubmissionSummary({
+  name,
+  email,
+  adults,
+  children,
+  adult_food_preferences,
+  child_ages,
+  child_food_preferences,
+}) {
+  if (!submissionSummary) {
+    return;
+  }
+
+  submissionSummaryTitle.textContent = `Thank you, ${name}!`;
+  submissionSummaryMeta.textContent = "Your RSVP was submitted with the details below:";
+
+  submissionSummaryList.innerHTML = "";
+
+  const rows = [
+    `Email: ${email}`,
+    `Adults: ${adults}`,
+    `Adult meals: ${formatFoodCounts(adult_food_preferences)}`,
+    `Children: ${children}`,
+  ];
+
+  if (children > 0) {
+    const childRows = child_ages.map(
+      (age, index) => `Child ${index + 1}: Age ${age}, ${child_food_preferences[index]}`,
+    );
+    rows.push(...childRows);
+  }
+
+  rows.forEach((text) => {
+    const li = document.createElement("li");
+    li.textContent = text;
+    submissionSummaryList.appendChild(li);
+  });
+
+  submissionSummary.classList.remove("hidden");
+}
 
 emailInput.addEventListener("input", () => {
   emailInput.setCustomValidity("");
@@ -239,7 +295,15 @@ document
       adultFoodContainer.innerHTML = "";
       childAgesContainer.innerHTML = "";
 
-      alert(`Thank you, ${data.rsvp.name}! Your RSVP has been submitted.`);
+      showSubmissionSummary({
+        name,
+        email,
+        adults,
+        children,
+        adult_food_preferences,
+        child_ages,
+        child_food_preferences,
+      });
     } catch (err) {
       alert("Could not connect to server. Please try again.");
       console.error(err);

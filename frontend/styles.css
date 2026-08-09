@@ -187,6 +187,37 @@ button:hover {
     border-radius: 8px;
 }
 
+.submission-summary {
+    margin-top: 20px;
+    background: linear-gradient(135deg, #ecfff1 0%, #dff8e8 100%);
+    border: 1px solid #bce8ca;
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.submission-summary h3 {
+    margin: 0 0 6px;
+    color: #1f6f3c;
+}
+
+.submission-summary p {
+    margin: 0 0 10px;
+    color: #2b5138;
+}
+
+.submission-summary ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.submission-summary li {
+    margin-bottom: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
 /* RSVP List */
 #rsvpList {
     margin-top: 20px;
@@ -273,3 +304,4 @@ button:hover {
 .footer-illustration span {
     margin: 0 10px;
 }
+
