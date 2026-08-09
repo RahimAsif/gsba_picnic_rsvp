@@ -1,7 +1,7 @@
 import os
 import json
 import sqlite3
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -35,6 +35,7 @@ def resolve_db_path():
 
 
 DB_PATH = resolve_db_path()
+ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "")
 
 app = Flask(__name__)
 CORS(app)
@@ -84,6 +85,11 @@ def get_summary(conn):
     return {"total_adults": row["total_adults"], "total_children": row["total_children"]}
 
 
+def is_admin_authorized():
+    token = request.headers.get("X-Admin-Token", "")
+    return bool(ADMIN_TOKEN) and token == ADMIN_TOKEN
+
+
 # ---------------------------------------------------------------------------
 # REST API
 # ---------------------------------------------------------------------------
@@ -94,7 +100,42 @@ def health():
         "status": "ok",
         "db_path": DB_PATH,
         "db_exists": os.path.exists(DB_PATH),
+        "admin_token_configured": bool(ADMIN_TOKEN),
     })
+
+
+@app.route("/api/admin/db-download", methods=["GET"])
+def download_db():
+    if not is_admin_authorized():
+        return jsonify({"error": "Unauthorized"}), 401
+
+    if not os.path.exists(DB_PATH):
+        return jsonify({"error": "Database file not found"}), 404
+
+    return send_file(
+        DB_PATH,
+        as_attachment=True,
+        download_name="rsvp.db",
+        mimetype="application/x-sqlite3",
+    )
+
+
+@app.route("/api/admin/reset", methods=["POST"])
+def reset_db_data():
+    if not is_admin_authorized():
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json(silent=True) or {}
+    if data.get("confirm") != "RESET":
+        return jsonify({"error": "Confirmation required. Send {\"confirm\": \"RESET\"}."}), 400
+
+    with get_db() as conn:
+        conn.execute("DELETE FROM rsvps")
+        conn.execute("DELETE FROM sqlite_sequence WHERE name = 'rsvps'")
+        conn.commit()
+        summary = get_summary(conn)
+
+    return jsonify({"message": "RSVP data reset successfully", "summary": summary})
 
 @app.route("/api/rsvps", methods=["GET"])
 def get_rsvps():
