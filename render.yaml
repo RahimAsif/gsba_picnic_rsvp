@@ -1,0 +1,30 @@
+services:
+  # ── Flask REST API ──────────────────────────────────────────────────────────
+  - type: web
+    name: picnic-rsvp-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12"
+
+  # ── Static Frontend ─────────────────────────────────────────────────────────
+  - type: web
+    name: picnic-rsvp-frontend
+    runtime: static
+    rootDir: frontend
+    # Writes the backend URL into config.js at build time.
+    # Set API_URL in the Render dashboard to your backend's URL,
+    # e.g. https://picnic-rsvp-api.onrender.com/api
+    buildCommand: echo "window.API_BASE = '${API_URL}';" > config.js
+    staticPublishPath: .
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

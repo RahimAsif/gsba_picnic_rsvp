@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GSBA Summer Picnic RSVP</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Summer Icon Banner -->
+      <div class="summer-banner">
+        <div class="icon sun">☀️</div>
+        <div class="icon basket">🧺</div>
+        <div class="icon tree">🌳</div>
+        <div class="icon lake">🌊</div>
+      </div>
+
+      <div class="header">
+        <h1>GSBA Summer Picnic RSVP</h1>
+        <p class="event-details">On Aug 16, 2026 at Dixon Lake</p>
+      </div>
+
+      <form id="rsvpForm">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" required />
+
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          required
+          pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+        />
+
+        <label for="adults">Adults <span class="inline-icon">🧑‍🤝‍🧑</span></label>
+        <input type="number" id="adults" min="1" required />
+
+        <label for="children"
+          >Children <span class="inline-icon">🧒</span></label
+        >
+        <input type="number" id="children" min="0" value="0" />
+
+        <div id="childAgesContainer"></div>
+
+        <button type="submit">Submit RSVP</button>
+      </form>
+
+      <div class="summary">
+        <h2>Total RSVPs</h2>
+        <p id="totalCount">Adults: 0<br />Children: 0</p>
+      </div>
+
+      <ul id="rsvpList"></ul>
+
+      <!-- Footer Illustration -->
+      <div class="footer-illustration">
+        <span>🌻</span>
+        <span>🍉</span>
+        <span>🪁</span>
+        <span>🍋</span>
+        <span>🌴</span>
+      </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,148 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+
+    /* Sexy sunset gradient */
+    background: linear-gradient(180deg, #ff9a9e 0%, #fecf6a 50%, #ffddc1 100%);
+
+    /* Soft glow effect */
+    background-attachment: fixed;
+
+    /* Tropical pattern overlay */
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.25) 0%, transparent 60%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.2) 0%, transparent 60%);
+
+    /* Smooth shimmer animation */
+    animation: shimmer 12s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 0% 0%, 100% 100%;
+    }
+    50% {
+        background-position: 100% 0%, 0% 100%;
+    }
+    100% {
+        background-position: 0% 0%, 100% 100%;
+    }
+}
+
+
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+}
+
+/* Summer Banner */
+.summer-banner {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+/* Header Section */
+.header {
+    text-align: center;
+    padding: 30px 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ffcf71, #ff9f1c);
+    color: #2d2d2d;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.header h1 {
+    font-size: 32px;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.header .event-details {
+    font-size: 18px;
+    margin-top: 10px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Form */
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.inline-icon {
+    font-size: 20px;
+    margin-left: 6px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 25px;
+    background: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #005fa3;
+}
+
+/* Summary */
+.summary {
+    margin-top: 30px;
+    text-align: center;
+    background: #eef6ff;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* RSVP List */
+#rsvpList {
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+#rsvpList li {
+    background: #fafafa;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+/* Footer Illustration */
+.footer-illustration {
+    text-align: center;
+    font-size: 32px;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 2px dashed #ffd27f;
+}
+
+.footer-illustration span {
+    margin: 0 10px;
+}
