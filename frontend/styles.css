@@ -134,6 +134,65 @@ button:hover {
     border: 1px solid #ddd;
 }
 
+#rsvpList li.rsvp-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #f2d89b;
+    background: linear-gradient(135deg, #fffdf7 0%, #fff6df 100%);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+}
+
+.rsvp-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #2f2f2f;
+}
+
+.rsvp-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid transparent;
+}
+
+.adults-pill {
+    background: #eaf4ff;
+    color: #0b5ea8;
+    border-color: #cfe6ff;
+}
+
+.children-pill {
+    background: #fff0f4;
+    color: #b54563;
+    border-color: #ffd1dd;
+}
+
+@media (max-width: 560px) {
+    #rsvpList li.rsvp-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .rsvp-stats {
+        justify-content: flex-start;
+    }
+}
+
 /* Footer Illustration */
 .footer-illustration {
     text-align: center;

@@ -37,15 +37,14 @@ childrenInput.addEventListener("input", () => {
 // Render a single RSVP entry into the list
 function renderRsvp(rsvp) {
   const li = document.createElement("li");
-  const childrenText =
-    rsvp.children > 0
-      ? `Children: ${rsvp.children} (${rsvp.children === 1 ? "Age" : "Ages"}: ${rsvp.child_ages.join(", ")})`
-      : `Children: 0`;
+  li.classList.add("rsvp-row");
 
   li.innerHTML = `
-    <strong>${rsvp.name}</strong><br>
-    Adults: ${rsvp.adults}<br>
-    ${childrenText}
+    <div class="rsvp-name">${rsvp.name}</div>
+    <div class="rsvp-stats">
+      <span class="pill adults-pill">🧑‍🤝‍🧑 Adults: ${rsvp.adults}</span>
+      <span class="pill children-pill">🧒 Children: ${rsvp.children}</span>
+    </div>
   `;
   document.getElementById("rsvpList").appendChild(li);
 }
