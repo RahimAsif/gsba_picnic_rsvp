@@ -5,7 +5,16 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "rsvp.db")
+RENDER_DISK_DIR = "/var/data"
+DB_PATH = os.getenv("SQLITE_DB_PATH")
+if not DB_PATH:
+    DB_PATH = (
+        os.path.join(RENDER_DISK_DIR, "rsvp.db")
+        if os.path.isdir(RENDER_DISK_DIR)
+        else os.path.join(BASE_DIR, "rsvp.db")
+    )
+
+os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
 
 app = Flask(__name__)
 CORS(app)
@@ -119,6 +128,7 @@ def post_rsvp():
 # Entry point
 # ---------------------------------------------------------------------------
 
+init_db()
+
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True, port=5000)
