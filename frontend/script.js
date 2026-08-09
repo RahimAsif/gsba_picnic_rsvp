@@ -10,8 +10,67 @@ function resolveApiBase() {
 
 const API_BASE = resolveApiBase();
 
+const FOOD_OPTIONS = ["Chicken", "Goat", "Veg/Non-Meat"];
+const CHILD_FOOD_OPTIONS = [
+  { value: "Chicken", label: "Chicken" },
+  { value: "Goat", label: "Goat" },
+  { value: "Veg/Non-Meat", label: "Veg/Non-Meat" },
+  { value: "Pizza And Nuggets", label: "Pizza and Nuggets" },
+];
+
+const adultsInput = document.getElementById("adults");
+const adultFoodContainer = document.getElementById("adultFoodContainer");
 const childrenInput = document.getElementById("children");
 const childAgesContainer = document.getElementById("childAgesContainer");
+const emailInput = document.getElementById("email");
+
+emailInput.addEventListener("input", () => {
+  emailInput.setCustomValidity("");
+});
+
+emailInput.addEventListener("invalid", () => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(emailInput.value.trim())) {
+    emailInput.setCustomValidity("Email is not in the correct format.");
+  } else {
+    emailInput.setCustomValidity("");
+  }
+});
+
+function renderAdultFoodFields() {
+  const count = parseInt(adultsInput.value) || 0;
+  adultFoodContainer.innerHTML = "";
+
+  for (let i = 1; i <= count; i++) {
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("adult-food-group");
+
+    const label = document.createElement("label");
+    label.textContent = `Adult ${i} Food Preference`;
+
+    const select = document.createElement("select");
+    select.required = true;
+    select.classList.add("adult-food");
+
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "Food preference";
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    select.appendChild(placeholder);
+
+    FOOD_OPTIONS.forEach((food) => {
+      const option = document.createElement("option");
+      option.value = food;
+      option.textContent = food;
+      select.appendChild(option);
+    });
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(select);
+    adultFoodContainer.appendChild(wrapper);
+  }
+}
 
 // Dynamically create age fields
 childrenInput.addEventListener("input", () => {
@@ -19,20 +78,50 @@ childrenInput.addEventListener("input", () => {
   childAgesContainer.innerHTML = "";
 
   for (let i = 1; i <= count; i++) {
-    const label = document.createElement("label");
-    label.textContent = `Age of Child ${i}`;
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("child-entry-row");
 
-    const input = document.createElement("input");
-    input.type = "number";
-    input.min = "0";
-    input.max = "19";
-    input.required = true;
-    input.classList.add("child-age");
+    const childLabel = document.createElement("span");
+    childLabel.classList.add("child-entry-label");
+    childLabel.textContent = `Child ${i}`;
 
-    childAgesContainer.appendChild(label);
-    childAgesContainer.appendChild(input);
+    const ageInput = document.createElement("input");
+    ageInput.type = "number";
+    ageInput.min = "0";
+    ageInput.max = "19";
+    ageInput.required = true;
+    ageInput.classList.add("child-age");
+    ageInput.placeholder = "Age";
+    ageInput.setAttribute("aria-label", `Age of Child ${i}`);
+
+    const foodSelect = document.createElement("select");
+    foodSelect.required = true;
+    foodSelect.classList.add("child-food");
+    foodSelect.setAttribute("aria-label", `Food preference of Child ${i}`);
+
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "Food preference";
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    foodSelect.appendChild(placeholder);
+
+    CHILD_FOOD_OPTIONS.forEach((food) => {
+      const option = document.createElement("option");
+      option.value = food.value;
+      option.textContent = food.label;
+      foodSelect.appendChild(option);
+    });
+
+    wrapper.appendChild(childLabel);
+    wrapper.appendChild(ageInput);
+    wrapper.appendChild(foodSelect);
+
+    childAgesContainer.appendChild(wrapper);
   }
 });
+
+adultsInput.addEventListener("input", renderAdultFoodFields);
 
 // Render a single RSVP entry into the list
 function renderRsvp(rsvp) {
@@ -102,12 +191,39 @@ document
     const child_ages = Array.from(ageInputs).map((input) =>
       parseInt(input.value),
     );
+    const childFoodInputs = document.querySelectorAll(".child-food");
+    const child_food_preferences = Array.from(childFoodInputs).map(
+      (input) => input.value,
+    );
+
+    if (child_food_preferences.length !== children || child_food_preferences.some((v) => !v)) {
+      alert("Please select a food preference for each child.");
+      return;
+    }
+
+    const foodInputs = document.querySelectorAll(".adult-food");
+    const adult_food_preferences = Array.from(foodInputs).map(
+      (input) => input.value,
+    );
+
+    if (adult_food_preferences.length !== adults || adult_food_preferences.some((v) => !v)) {
+      alert("Please select a food preference for each adult.");
+      return;
+    }
 
     try {
       const res = await fetch(`${API_BASE}/rsvp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, adults, children, child_ages }),
+        body: JSON.stringify({
+          name,
+          email,
+          adults,
+          children,
+          child_ages,
+          child_food_preferences,
+          adult_food_preferences,
+        }),
       });
 
       const data = await res.json();
@@ -117,11 +233,13 @@ document
         return;
       }
 
-      renderRsvp(data.rsvp);
-      updateSummary(data.summary);
+      await loadRsvps();
 
       document.getElementById("rsvpForm").reset();
+      adultFoodContainer.innerHTML = "";
       childAgesContainer.innerHTML = "";
+
+      alert(`Thank you, ${data.rsvp.name}! Your RSVP has been submitted.`);
     } catch (err) {
       alert("Could not connect to server. Please try again.");
       console.error(err);

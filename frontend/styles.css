@@ -18,6 +18,10 @@ body {
     animation: shimmer 12s ease-in-out infinite;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 @keyframes shimmer {
     0% {
         background-position: 0% 0%, 100% 100%;
@@ -92,6 +96,70 @@ input {
     margin-top: 5px;
     border-radius: 6px;
     border: 1px solid #ccc;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+
+.adult-food-group {
+    margin-top: 10px;
+    background: #fff9ef;
+    border: 1px solid #ffe2ad;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.adult-food-group label {
+    margin-top: 0;
+}
+
+.child-entry-row {
+    margin-top: 10px;
+    background: #f3fbff;
+    border: 1px solid #d8efff;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.child-entry-label {
+    font-weight: 700;
+    color: #1d4d75;
+}
+
+.child-entry-row .child-age,
+.child-entry-row .child-food {
+    margin-top: 0;
+}
+
+.child-entry-row .child-age {
+    width: 90px;
+    min-width: 90px;
+}
+
+.child-entry-row .child-food {
+    flex: 1;
+    min-width: 0;
+}
+
+@media (max-width: 560px) {
+    .child-entry-row {
+        flex-wrap: wrap;
+    }
+
+    .child-entry-row .child-age {
+        width: 100%;
+        min-width: 0;
+    }
 }
 
 button {
