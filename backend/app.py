@@ -6,15 +6,35 @@ from flask_cors import CORS
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RENDER_DISK_DIR = "/var/data"
-DB_PATH = os.getenv("SQLITE_DB_PATH")
-if not DB_PATH:
-    DB_PATH = (
-        os.path.join(RENDER_DISK_DIR, "rsvp.db")
-        if os.path.isdir(RENDER_DISK_DIR)
-        else os.path.join(BASE_DIR, "rsvp.db")
-    )
 
-os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+
+def resolve_db_path():
+    candidates = []
+
+    env_path = os.getenv("SQLITE_DB_PATH")
+    if env_path:
+        candidates.append(env_path)
+
+    candidates.extend([
+        os.path.join(RENDER_DISK_DIR, "rsvp.db"),
+        os.path.join(BASE_DIR, "rsvp.db"),
+        "/tmp/rsvp.db",
+    ])
+
+    for path in candidates:
+        try:
+            directory = os.path.dirname(path) or "."
+            os.makedirs(directory, exist_ok=True)
+            with open(path, "a", encoding="utf-8"):
+                pass
+            return path
+        except OSError:
+            continue
+
+    raise RuntimeError("No writable path available for SQLite database")
+
+
+DB_PATH = resolve_db_path()
 
 app = Flask(__name__)
 CORS(app)
