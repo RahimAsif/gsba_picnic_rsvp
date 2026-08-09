@@ -88,6 +88,14 @@ def get_summary(conn):
 # REST API
 # ---------------------------------------------------------------------------
 
+@app.route("/api/health", methods=["GET"])
+def health():
+    return jsonify({
+        "status": "ok",
+        "db_path": DB_PATH,
+        "db_exists": os.path.exists(DB_PATH),
+    })
+
 @app.route("/api/rsvps", methods=["GET"])
 def get_rsvps():
     with get_db() as conn:
