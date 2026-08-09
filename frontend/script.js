@@ -1,4 +1,14 @@
-const API_BASE = window.API_BASE || "http://localhost:5000/api";
+function resolveApiBase() {
+  const raw = (window.API_BASE || "").trim();
+  if (raw && raw !== "undefined" && raw !== "null") {
+    return raw.replace(/\/$/, "");
+  }
+
+  // Local development fallback
+  return "http://localhost:5000/api";
+}
+
+const API_BASE = resolveApiBase();
 
 const childrenInput = document.getElementById("children");
 const childAgesContainer = document.getElementById("childAgesContainer");
@@ -55,6 +65,13 @@ async function loadRsvps() {
       fetch(`${API_BASE}/rsvps`),
       fetch(`${API_BASE}/summary`),
     ]);
+
+    if (!rsvpsRes.ok || !summaryRes.ok) {
+      throw new Error(
+        `API request failed (rsvps: ${rsvpsRes.status}, summary: ${summaryRes.status})`,
+      );
+    }
+
     const rsvps = await rsvpsRes.json();
     const summary = await summaryRes.json();
 
@@ -62,7 +79,7 @@ async function loadRsvps() {
     rsvps.forEach(renderRsvp);
     updateSummary(summary);
   } catch (err) {
-    console.error("Failed to load RSVPs:", err);
+    console.error("Failed to load RSVPs:", err, "API_BASE:", API_BASE);
   }
 }
 

@@ -20,7 +20,7 @@ services:
     # Writes the backend URL into config.js at build time.
     # Set API_URL in the Render dashboard to your backend's URL,
     # e.g. https://picnic-rsvp-api.onrender.com/api
-    buildCommand: echo "window.API_BASE = '${API_URL}';" > config.js
+    buildCommand: echo "window.API_BASE = '${API_URL:-https://picnic-rsvp-api.onrender.com/api}';" > config.js
     staticPublishPath: .
     headers:
       - path: /*
