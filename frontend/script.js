@@ -196,12 +196,113 @@ function renderRsvp(rsvp) {
   document.getElementById("rsvpList").appendChild(row);
 }
 
+function animateNumber({ from, to, duration = 550, onUpdate, onComplete }) {
+  if (from === to) {
+    onUpdate(to);
+    if (onComplete) {
+      onComplete();
+    }
+    return;
+  }
+
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  if (reduceMotion) {
+    onUpdate(to);
+    if (onComplete) {
+      onComplete();
+    }
+    return;
+  }
+
+  const start = performance.now();
+  const change = to - from;
+
+  function step(now) {
+    const elapsed = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - elapsed, 3);
+    const value = Math.round(from + change * eased);
+
+    onUpdate(value);
+
+    if (elapsed < 1) {
+      requestAnimationFrame(step);
+      return;
+    }
+
+    if (onComplete) {
+      onComplete();
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
 // Update the summary totals display
 function updateSummary(summary) {
+  const adults = summary.total_adults || 0;
+  const children = summary.total_children || 0;
+  const totalGuests = adults + children;
+
+  const currentValues = Array.from(
+    document.querySelectorAll("#totalCount .summary-value"),
+  ).map((node) => parseInt(node.textContent, 10) || 0);
+  const currentAdults = currentValues[0] || 0;
+  const currentChildren = currentValues[1] || 0;
+
+  const summaryBadgeCount = document.getElementById("summaryBadgeCount");
+  const currentBadge = summaryBadgeCount
+    ? parseInt(summaryBadgeCount.textContent, 10) || 0
+    : 0;
+
   document.getElementById("totalCount").innerHTML = `
-    Adults: ${summary.total_adults}<br>
-    Children: ${summary.total_children}
+    <div class="summary-stat">
+      <span class="summary-label">Adults</span>
+      <strong class="summary-value">${currentAdults}</strong>
+    </div>
+    <div class="summary-stat">
+      <span class="summary-label">Children</span>
+      <strong class="summary-value">${currentChildren}</strong>
+    </div>
   `;
+
+  const [adultsNode, childrenNode] = document.querySelectorAll(
+    "#totalCount .summary-value",
+  );
+
+  if (adultsNode) {
+    animateNumber({
+      from: currentAdults,
+      to: adults,
+      onUpdate: (value) => {
+        adultsNode.textContent = value;
+      },
+    });
+  }
+
+  if (childrenNode) {
+    animateNumber({
+      from: currentChildren,
+      to: children,
+      onUpdate: (value) => {
+        childrenNode.textContent = value;
+      },
+    });
+  }
+
+  if (summaryBadgeCount) {
+    animateNumber({
+      from: currentBadge,
+      to: totalGuests,
+      onUpdate: (value) => {
+        summaryBadgeCount.textContent = `${value} Guests`;
+      },
+      onComplete: () => {
+        summaryBadgeCount.textContent = `${totalGuests} Guests`;
+      },
+    });
+  }
 }
 
 // Load existing RSVPs and summary on page load

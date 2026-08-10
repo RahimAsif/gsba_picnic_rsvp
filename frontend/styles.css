@@ -210,10 +210,81 @@ button:hover {
 /* Summary */
 .summary {
     margin-top: 30px;
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid #ffd9a4;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.65), transparent 45%),
+        linear-gradient(135deg, #fff2da 0%, #ffe7c0 45%, #ffdca8 100%);
+    box-shadow: 0 10px 24px rgba(173, 108, 22, 0.15);
+}
+
+.summary-heading-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.summary h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #5f3800;
+    letter-spacing: 0.4px;
+}
+
+.summary-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 92px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #7b3f00;
+    background: linear-gradient(180deg, #fff8e6 0%, #ffe6b0 100%);
+    border: 1px solid #ffce73;
+    border-radius: 999px;
+}
+
+.summary-subtitle {
+    margin: 8px 0 14px;
+    color: #744f1a;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.summary-stat {
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid #ffd7a0;
+    border-radius: 12px;
+    padding: 12px;
     text-align: center;
-    background: #eef6ff;
-    padding: 15px;
-    border-radius: 8px;
+}
+
+.summary-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #7b5a2c;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.summary-value {
+    display: block;
+    margin-top: 4px;
+    font-size: 30px;
+    line-height: 1;
+    color: #3e2a0f;
 }
 
 .submission-summary {
@@ -316,6 +387,23 @@ button:hover {
 
     .rsvp-cell {
         font-size: 14px;
+    }
+
+    .summary {
+        padding: 14px;
+    }
+
+    .summary h2 {
+        font-size: 20px;
+    }
+
+    .summary-badge {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+
+    .summary-value {
+        font-size: 26px;
     }
 }
 

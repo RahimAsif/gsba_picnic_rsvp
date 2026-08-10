@@ -54,9 +54,22 @@
         <ul id="submissionSummaryList"></ul>
       </section>
 
-      <div class="summary">
-        <h2>Total RSVPs</h2>
-        <p id="totalCount">Adults: 0<br />Children: 0</p>
+      <div class="summary" aria-live="polite">
+        <div class="summary-heading-row">
+          <h2>Total RSVPs</h2>
+          <span id="summaryBadgeCount" class="summary-badge">0 Guests</span>
+        </div>
+        <p class="summary-subtitle">Current picnic crew</p>
+        <div id="totalCount" class="summary-stats">
+          <div class="summary-stat">
+            <span class="summary-label">Adults</span>
+            <strong class="summary-value">0</strong>
+          </div>
+          <div class="summary-stat">
+            <span class="summary-label">Children</span>
+            <strong class="summary-value">0</strong>
+          </div>
+        </div>
       </div>
 
       <section class="rsvp-table" aria-label="RSVP list">
