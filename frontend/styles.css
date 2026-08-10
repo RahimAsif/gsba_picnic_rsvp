@@ -38,10 +38,39 @@ body {
 .container {
     max-width: 600px;
     margin: 40px auto;
+    width: min(600px, calc(100% - 24px));
     background: white;
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 560px) {
+    .container {
+        margin: 14px auto;
+        padding: 16px;
+        border-radius: 10px;
+    }
+
+    .header {
+        padding: 20px 14px;
+        margin-bottom: 18px;
+    }
+
+    .header h1 {
+        font-size: 26px;
+        line-height: 1.2;
+    }
+
+    .header .event-details {
+        font-size: 16px;
+    }
+
+    .summer-banner {
+        font-size: 32px;
+        padding: 10px;
+        margin-bottom: 14px;
+    }
 }
 
 /* Summer Banner */
@@ -218,77 +247,75 @@ button:hover {
     display: none;
 }
 
-/* RSVP List */
-#rsvpList {
-    margin-top: 20px;
-    list-style: none;
-    padding: 0;
-}
-
-#rsvpList li {
-    background: #fafafa;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-}
-
-#rsvpList li.rsvp-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    padding: 14px 16px;
+/* RSVP Table */
+.rsvp-table {
+    margin-top: 22px;
+    border: 1px solid #edd9ab;
     border-radius: 12px;
-    border: 1px solid #f2d89b;
-    background: linear-gradient(135deg, #fffdf7 0%, #fff6df 100%);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    overflow: hidden;
+    background: #fffaf0;
 }
 
-.rsvp-name {
-    font-size: 17px;
-    font-weight: 700;
+.rsvp-table-header,
+.rsvp-row {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) 90px 90px;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 14px;
+}
+
+.rsvp-table-header {
+    background: linear-gradient(135deg, #ffe7ac 0%, #ffd685 100%);
+    color: #69480d;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rsvp-table-body {
+    background: #fffdf9;
+}
+
+.rsvp-row {
+    border-top: 1px solid #f2e3bf;
+}
+
+.rsvp-row:nth-child(even) {
+    background: #fff8ea;
+}
+
+.rsvp-cell {
+    font-size: 15px;
     color: #2f2f2f;
 }
 
-.rsvp-stats {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-}
-
-.pill {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 13px;
+.rsvp-name {
     font-weight: 700;
-    border: 1px solid transparent;
 }
 
-.adults-pill {
-    background: #eaf4ff;
-    color: #0b5ea8;
-    border-color: #cfe6ff;
-}
-
-.children-pill {
-    background: #fff0f4;
-    color: #b54563;
-    border-color: #ffd1dd;
+.rsvp-adults,
+.rsvp-children,
+.rsvp-col-adults,
+.rsvp-col-children {
+    text-align: center;
 }
 
 @media (max-width: 560px) {
-    #rsvpList li.rsvp-row {
-        flex-direction: column;
-        align-items: flex-start;
+    .rsvp-table-header,
+    .rsvp-row {
+        grid-template-columns: minmax(130px, 1fr) 70px 80px;
+        gap: 8px;
+        padding: 10px;
     }
 
-    .rsvp-stats {
-        justify-content: flex-start;
+    .rsvp-table-header {
+        font-size: 12px;
+    }
+
+    .rsvp-cell {
+        font-size: 14px;
     }
 }
 

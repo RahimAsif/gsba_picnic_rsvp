@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>GSBA Summer Picnic RSVP</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -58,7 +59,14 @@
         <p id="totalCount">Adults: 0<br />Children: 0</p>
       </div>
 
-      <ul id="rsvpList"></ul>
+      <section class="rsvp-table" aria-label="RSVP list">
+        <div class="rsvp-table-header" role="row">
+          <span class="rsvp-col-name" role="columnheader">Name</span>
+          <span class="rsvp-col-adults" role="columnheader">Adults</span>
+          <span class="rsvp-col-children" role="columnheader">Children</span>
+        </div>
+        <div id="rsvpList" class="rsvp-table-body"></div>
+      </section>
 
       <!-- Footer Illustration -->
       <div class="footer-illustration">

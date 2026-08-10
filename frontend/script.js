@@ -24,7 +24,9 @@ const childrenInput = document.getElementById("children");
 const childAgesContainer = document.getElementById("childAgesContainer");
 const emailInput = document.getElementById("email");
 const submissionSummary = document.getElementById("submissionSummary");
-const submissionSummaryTitle = document.getElementById("submissionSummaryTitle");
+const submissionSummaryTitle = document.getElementById(
+  "submissionSummaryTitle",
+);
 const submissionSummaryMeta = document.getElementById("submissionSummaryMeta");
 const submissionSummaryList = document.getElementById("submissionSummaryList");
 
@@ -53,7 +55,8 @@ function showSubmissionSummary({
   }
 
   submissionSummaryTitle.textContent = `Thank you, ${name}!`;
-  submissionSummaryMeta.textContent = "Your RSVP was submitted with the details below:";
+  submissionSummaryMeta.textContent =
+    "Your RSVP was submitted with the details below:";
 
   submissionSummaryList.innerHTML = "";
 
@@ -66,7 +69,8 @@ function showSubmissionSummary({
 
   if (children > 0) {
     const childRows = child_ages.map(
-      (age, index) => `Child ${index + 1}: Age ${age}, ${child_food_preferences[index]}`,
+      (age, index) =>
+        `Child ${index + 1}: Age ${age}, ${child_food_preferences[index]}`,
     );
     rows.push(...childRows);
   }
@@ -181,17 +185,15 @@ adultsInput.addEventListener("input", renderAdultFoodFields);
 
 // Render a single RSVP entry into the list
 function renderRsvp(rsvp) {
-  const li = document.createElement("li");
-  li.classList.add("rsvp-row");
+  const row = document.createElement("div");
+  row.classList.add("rsvp-row");
 
-  li.innerHTML = `
-    <div class="rsvp-name">${rsvp.name}</div>
-    <div class="rsvp-stats">
-      <span class="pill adults-pill">🧑‍🤝‍🧑 Adults: ${rsvp.adults}</span>
-      <span class="pill children-pill">🧒 Children: ${rsvp.children}</span>
-    </div>
+  row.innerHTML = `
+    <span class="rsvp-cell rsvp-name">${rsvp.name}</span>
+    <span class="rsvp-cell rsvp-adults">${rsvp.adults}</span>
+    <span class="rsvp-cell rsvp-children">${rsvp.children}</span>
   `;
-  document.getElementById("rsvpList").appendChild(li);
+  document.getElementById("rsvpList").appendChild(row);
 }
 
 // Update the summary totals display
@@ -252,7 +254,10 @@ document
       (input) => input.value,
     );
 
-    if (child_food_preferences.length !== children || child_food_preferences.some((v) => !v)) {
+    if (
+      child_food_preferences.length !== children ||
+      child_food_preferences.some((v) => !v)
+    ) {
       alert("Please select a food preference for each child.");
       return;
     }
@@ -262,7 +267,10 @@ document
       (input) => input.value,
     );
 
-    if (adult_food_preferences.length !== adults || adult_food_preferences.some((v) => !v)) {
+    if (
+      adult_food_preferences.length !== adults ||
+      adult_food_preferences.some((v) => !v)
+    ) {
       alert("Please select a food preference for each adult.");
       return;
     }
